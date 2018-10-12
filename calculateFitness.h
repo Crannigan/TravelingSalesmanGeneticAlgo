@@ -5,9 +5,10 @@ int calculateFitness(map<string, Graph> city_dist_map, vector<int> path,
 
 	int total = 0;
 	Graph hold;
+	string city_one, city_two;
 	for(int i = 0; i < path.size() - 1; i++)	{
-		string city_one = index_to_city[path[i]];
-		string city_two = index_to_city[path[i+1]];
+		city_one = index_to_city[path[i]];
+		city_two = index_to_city[path[i+1]];
 		hold = city_dist_map[city_one];
 		total += hold.getDistance(city_two);
 	}
