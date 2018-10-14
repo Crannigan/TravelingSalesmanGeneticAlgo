@@ -55,6 +55,7 @@ int main(int argc, char** argv)	{
 		main_pool.addGene(tempGene);
 	}
 
+	// Calculate each generation after the first up to gensCount
 	for(int i = 0; i < gensCount; i++)	{
 		genePool next_pool;
 		main_pool.addTenBestToNext(next_pool);

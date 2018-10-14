@@ -12,9 +12,18 @@ if exist main.exe (
     del main.exe
 )
 
-g++ -o main main.cpp graph.cpp gene.cpp genePool.cpp
+if exist *.o (
+    del *.o
+)
+
+g++ -std=c++11 -c graph.cpp gene.cpp genePool.cpp
+g++ -std=c++11 -o main main.cpp graph.o gene.o genePool.o
 if %ERRORLEVEL% NEQ 0 (
     EXIT /b
 )
 
-main "cities.txt" "city_mileage.txt" 500 500
+if exist *.o (
+    del *.o
+)
+
+ main "cities.txt" "city_mileage.txt" 500 500
