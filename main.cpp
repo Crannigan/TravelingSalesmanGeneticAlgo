@@ -21,6 +21,7 @@ void outputVec(Gene thisGene, map<int, string> cityIndex);
 int main(int argc, char** argv)	{
 	if(argc < 5 || argc > 5)	{
 		cout << "You do not have the correct input parameters" << endl;
+		return 0;
 	}
 
 	srand (time(NULL));
@@ -28,7 +29,7 @@ int main(int argc, char** argv)	{
 	map<int, string> cityIndex;
 	map<string, Graph> distanceMap;
 	Graph hold;
-	int gensCount, geneCount;
+	int gensCount, geneCount, i;
 	vector<int> base_path, temp_path;
 	string starting_city;
 	genePool main_pool;
@@ -42,12 +43,12 @@ int main(int argc, char** argv)	{
 	starting_city = cityIndex[0];
 
 	// Create Base Path of 1-N, exclude 0 because this is the starting and ending city
-	for(int i = 1; i < cityIndex.size(); i++)	{
+	for(i = 1; i < cityIndex.size(); i++)	{
 		base_path.push_back(i);
 	}
 
 	// Create Initial Gene Pool
-	for(int i = 0; i < geneCount; i++)	{
+	for(i = 0; i < geneCount; i++)	{
 		temp_path = base_path;
 		random_shuffle(temp_path.begin(), temp_path.end());
 		tempGene = Gene(temp_path);
@@ -56,7 +57,7 @@ int main(int argc, char** argv)	{
 	}
 
 	// Calculate each generation after the first up to gensCount
-	for(int i = 0; i < gensCount; i++)	{
+	for(i = 0; i < gensCount; i++)	{
 		genePool next_pool;
 		main_pool.addTenBestToNext(next_pool);
 	
@@ -69,10 +70,12 @@ int main(int argc, char** argv)	{
 		}
 		main_pool.clear();
 		main_pool = next_pool;
-		if(i%5 == 0)	{
+		if(i%20 == 0)	{
 			cout << "Completed " << i << " out of " << gensCount << " generations." << endl;
 		}
 	}
+
+	cout << "Completed " << i << " out of " << gensCount << " generations." << endl;
 
 	outputVec(main_pool.getGeneAtIndex(0), cityIndex);
 
