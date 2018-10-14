@@ -16,12 +16,14 @@
 
 using namespace std;
 
-void outputVec(vector<int> outputText, map<string, Graph> distanceMap, map<int, string> cityIndex);
+void outputVec(Gene thisGene, map<int, string> cityIndex);
 
 int main(int argc, char** argv)	{
 	if(argc < 5 || argc > 5)	{
 		cout << "You do not have the correct input parameters" << endl;
 	}
+
+	srand (time(NULL));
 
 	map<int, string> cityIndex;
 	map<string, Graph> distanceMap;
@@ -29,8 +31,8 @@ int main(int argc, char** argv)	{
 	int gensCount, geneCount;
 	vector<int> base_path, temp_path;
 	string starting_city;
-	genePool main_pool, next_pool;
-	Gene tempGene;
+	genePool main_pool;
+	Gene tempGene, cross1, cross2;
 	
 	// Create Base Map with Distances Between Cities and Initialize Inputs
 	cityIndex = listCityNames(argv[1]);
@@ -53,18 +55,34 @@ int main(int argc, char** argv)	{
 		main_pool.addGene(tempGene);
 	}
 
-	for(int i = 0; i < 10; i++)	{
-		outputVec(main_pool.getGeneAtIndex(i).getGene(), distanceMap, cityIndex);
+	for(int i = 0; i < gensCount; i++)	{
+		genePool next_pool;
+		main_pool.addTenBestToNext(next_pool);
+	
+		while(next_pool.getPoolSize() < geneCount)	{
+			main_pool.getCrossovered(cross1, cross2);
+			cross1.setFitness(calculateFitness(distanceMap, cross1.getGene(), cityIndex));
+			cross2.setFitness(calculateFitness(distanceMap, cross2.getGene(), cityIndex));
+			next_pool.addGene(cross1);
+			next_pool.addGene(cross2);
+		}
+		main_pool.clear();
+		main_pool = next_pool;
+		if(i%5 == 0)	{
+			cout << "Completed " << i << " out of " << gensCount << " generations." << endl;
+		}
 	}
 
-	cout << "\n" << main_pool.getPoolSize() << endl;
+	outputVec(main_pool.getGeneAtIndex(0), cityIndex);
 
 	return 0;
 }
 
-void outputVec(vector<int> outputText, map<string, Graph> distanceMap, map<int, string> cityIndex)	{
+void outputVec(Gene thisGene, map<int, string> cityIndex)	{
+	vector<int> outputText = thisGene.getGene();
+	int fitness = thisGene.getFitness();
 	for(int i = 0; i < outputText.size(); i++)	{
 		cout << outputText[i] << " ";
 	}
-	cout << " : " << calculateFitness(distanceMap, outputText, cityIndex) << endl;
+	cout << ": " << fitness*-1 << endl;
 }

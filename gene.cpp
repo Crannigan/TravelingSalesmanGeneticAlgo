@@ -27,3 +27,11 @@ int Gene::getFitness()	{
 vector<int> Gene::getGene()	{
 	return this->sequence;
 }
+
+void Gene::assignCity(int pos, int val)	{
+	sequence[pos] = val;
+}
+
+int Gene::getCity(int pos)	{
+	return sequence[pos];
+}

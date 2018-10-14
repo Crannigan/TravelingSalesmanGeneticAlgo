@@ -16,4 +16,8 @@ public:
 	int getFitness();
 
 	vector<int> getGene();
+
+	void assignCity(int pos, int val);
+
+	int getCity(int pos);
 };
