@@ -1,7 +1,7 @@
 using namespace std;
 
 int calculateFitness(map<string, Graph> city_dist_map, vector<int> path, 
-					map<int, string> index_to_city, string start_city)	{
+					map<int, string> index_to_city)	{
 
 	int total = 0;
 	Graph hold;
